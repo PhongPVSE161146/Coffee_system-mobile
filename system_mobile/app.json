@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "baitapso2",
-    "slug": "baitapso2",
+    "name": "System Mobile",
+    "slug": "system_mobile",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -10,19 +10,58 @@
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
+      "extra": {
+      "EXPO_PUBLIC_URL": "https://coffeeshop.ngrok.app/api"
+    },
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.phong.systemmobile",
+      "infoPlist": {
+        "NSCameraUsageDescription": "This app requires camera access to scan QR codes."
+      },
+      "permissions": [
+        "CAMERA"
+      ],
     },
     "android": {
+      "package": "com.phong.systemmobile",
+      "permissions": [
+        "CAMERA"
+      ],
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ],
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "1d5da338-2abe-40dc-94ea-7b38f2edd0f1"
+      }
+   
+    },
+    "owner": "phongpvse161146",
+    "plugins": [
+      "expo-router",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera",
+          "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone",
+          "recordAudioAndroid": true
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
     }
   }
 }

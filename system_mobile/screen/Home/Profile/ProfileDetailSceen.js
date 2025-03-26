@@ -1,34 +1,41 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, Image, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, TextInput, Image, TouchableOpacity, StyleSheet, StatusBar } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import DateTimePicker from '@react-native-community/datetimepicker';
 
-export default function ProfileInvaSceen({ navigation }) {
-  const [name, setName] = useState("phong@mail.com", true);
+export default function ProfileDetailSceen({ navigation }) {
+  const [name, setName] = useState("phong@gmail.com", true);
   const [phone] = useState("0833183077");
-  const [dob, setDob] = useState("22 / 11 / 2002");
+  const [dob, setDob] = useState(new Date());
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("Cầu Kênh Chè, Xã Long Thạnh, Huyện Thủ...");
   const [gender, setGender] = useState("Anh");
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
   // Kiểm tra navigation state
   useEffect(() => {
     console.log(navigation.getState());
-  }, []);
+  }, [navigation]);
+
+  const handleDateChange = (event, selectedDate) => {
+    setShowDatePicker(false);
+    if (selectedDate) {
+      setDob(selectedDate);
+    }
+  };
+
+  const handleUpdate = () => {
+    // Giả sử lưu data vào đây
+    console.log("Dữ liệu đã được lưu:", { name, dob, email, address, gender });
+    alert("Cập nhật thông tin thành công!");
+    navigation.navigate("HomePage"); // ✅ Quay về màn hình Login
+  };
 
   return (
     <View style={styles.container}>
-      {/* Nút quay lại */}
-      <TouchableOpacity
-        onPress={() => {
-          navigation.reset({
-            index: 0,
-            routes: [{ name: "ProfileScreen" }], // Đảm bảo quay về đúng ProfileScreen
-          });
-        }}
-        style={styles.backButton}
-      >
-        <Ionicons name="arrow-back" size={24} color="black" />
-        <Text style={styles.backText}>Quay lại</Text>
+      <TouchableOpacity onPress={() => navigation.goBack()} style={{ flexDirection: "row", alignItems: "center", marginBottom: 20, marginTop: 30 }}>
+        <Ionicons name="arrow-back" size={28} color="#333" />
+        <Text style={{ fontSize: 20, marginLeft: 10, color: "#333", fontWeight: "bold" }}>Quay lại</Text>
       </TouchableOpacity>
 
       {/* Tiêu đề */}
@@ -36,7 +43,7 @@ export default function ProfileInvaSceen({ navigation }) {
 
       {/* Ảnh đại diện */}
       <View style={styles.avatarContainer}>
-        <Image source={{ uri: "https://i.pravatar.cc/150?img=3" }} style={styles.avatar} />
+        <Image source={{ uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRt823sklj0_dEOAH3VzA3SR8ZUVftMdfiylA&s" }} style={styles.avatar} />
       </View>
 
       {/* Chọn giới tính */}
@@ -65,10 +72,17 @@ export default function ProfileInvaSceen({ navigation }) {
         </View>
 
         <Text style={styles.label}>Ngày sinh</Text>
-        <View style={styles.inputContainer}>
-          <TextInput value={dob} onChangeText={setDob} style={styles.input} />
-          <Ionicons name="pencil" size={20} color="gray" />
-        </View>
+        <TouchableOpacity onPress={() => setShowDatePicker(true)} style={styles.inputContainer}>
+          <Text>{dob.toLocaleDateString()}</Text>
+        </TouchableOpacity>
+        {showDatePicker && (
+          <DateTimePicker
+            value={dob}
+            mode="date"
+            display="default"
+            onChange={handleDateChange}
+          />
+        )}
 
         <Text style={styles.label}>Email</Text>
         <View style={styles.inputContainer}>
@@ -84,18 +98,19 @@ export default function ProfileInvaSceen({ navigation }) {
       </View>
 
       {/* Nút cập nhật */}
-      <TouchableOpacity style={styles.updateButton} disabled={true}>
+      <TouchableOpacity style={styles.updateButton} onPress={handleUpdate}>
         <Text style={styles.updateText}>Cập nhật</Text>
       </TouchableOpacity>
+      {/* <StatusBar style="auto" /> */}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#fff", padding: 20 },
-  backButton: { flexDirection: "row", alignItems: "center", marginBottom: 10 },
+  backButton: { flexDirection: "row", alignItems: "center", marginTop: 30 },
   backText: { marginLeft: 5, fontSize: 16, color: "#007AFF" },
-  header: { fontSize: 24, fontWeight: "bold", marginBottom: 20 },
+  header: { fontSize: 24, fontWeight: "bold", marginBottom: 20, marginTop: 30 },
   avatarContainer: { alignItems: "center", marginBottom: 10 },
   avatar: { width: 80, height: 80, borderRadius: 40 },
   genderContainer: { flexDirection: "row", marginBottom: 15 },
@@ -127,7 +142,7 @@ const styles = StyleSheet.create({
   input: { flex: 1, fontSize: 16, color: "#333" },
   disabledInput: { color: "gray" },
   updateButton: {
-    backgroundColor: "#ccc",
+    backgroundColor: "#FF9500",
     padding: 15,
     borderRadius: 10,
     alignItems: "center",
