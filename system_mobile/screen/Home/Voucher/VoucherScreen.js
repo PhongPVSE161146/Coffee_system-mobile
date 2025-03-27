@@ -6,29 +6,25 @@ import { useFocusEffect } from '@react-navigation/native';
 export default function VoucherScreen({ navigation }) {
     const [vouchers, setVouchers] = useState([]);
     const [loading, setLoading] = useState(true);
-    const API_URL = process.env.EXPO_PUBLIC_URL; // Dùng trực tiếp từ process.env
+    const API_URL = process.env.EXPO_PUBLIC_URL;
 
     useFocusEffect(
         React.useCallback(() => {
             const fetchVouchers = async () => {
                 try {
                     const response = await axios.get(API_URL);
-                    console.log('API_URL:', API_URL); // Kiểm tra giá trị
+                    console.log('API_URL:', API_URL);
                     console.log(response.data);
 
-                    if (!Array.isArray(response.data)) {
+                    if (!response.data || !Array.isArray(response.data.coupons)) {
                         throw new Error("Dữ liệu API không hợp lệ");
                     }
 
-                    const voucherData = response.data.filter(item => 
-                        item.code || item.title
-                    );
-
-                    const formattedData = voucherData.map(item => ({
-                        id: item.id.toString(),
-                        title: item.title || `Giảm ${item.discountAmount || 0}%`,
-                        code: item.code || 'N/A',
-                        applicableProducts: item.applicableProducts || `Sản phẩm ID: ${item.productId || 'N/A'}`,
+                    const formattedData = response.data.coupons.map(item => ({
+                        id: item.couponId.toString(),
+                        title: item.couponCode || `Giảm ${item.discountAmount || 0} VND`,
+                        code: item.couponCode || 'N/A',
+                        applicableProducts: item.productId ? `Sản phẩm ID: ${item.productId}` : 'Áp dụng cho nhiều sản phẩm',
                     }));
 
                     setVouchers(formattedData);

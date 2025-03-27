@@ -7,7 +7,7 @@ export default function VoucherDetailScreen({ route }) {
     const { voucherId } = route.params;
     const [voucher, setVoucher] = useState(null);
     const [loading, setLoading] = useState(true);
-    const API_URL = process.env.EXPO_PUBLIC_URL; // Dùng trực tiếp từ process.env
+    const API_URL = process.env.EXPO_PUBLIC_URL; // Dùng trực tiếp từ env
 
     useFocusEffect(
         React.useCallback(() => {
@@ -18,22 +18,28 @@ export default function VoucherDetailScreen({ route }) {
 
     const fetchVoucherDetail = async () => {
         try {
-            const response = await axios.get(`${API_URL}/${voucherId}`);
-            const data = response.data;
+            const response = await axios.get(API_URL);
+            const { coupons } = response.data;
 
-            if (!data || typeof data !== 'object') {
-                throw new Error("Dữ liệu trả về từ API không hợp lệ");
+            if (!Array.isArray(coupons)) {
+                throw new Error("Dữ liệu API không hợp lệ");
+            }
+
+            const foundVoucher = coupons.find(coupon => coupon.couponId.toString() === voucherId);
+
+            if (!foundVoucher) {
+                throw new Error("Không tìm thấy voucher");
             }
 
             const formattedVoucher = {
-                id: data.id?.toString() || voucherId,
-                title: data.title || `Giảm ${data.discountAmount || 0}%`,
-                code: data.code || 'N/A',
-                startDate: data.startDate ? data.startDate.split('T')[0] : 'N/A',
-                endDate: data.endDate ? data.endDate.split('T')[0] : 'N/A',
-                applicableProducts: data.applicableProducts || 'Không xác định',
-                status: data.status || 'Không hoạt động',
-                description: data.description || 'Không có mô tả',
+                id: foundVoucher.couponId.toString(),
+                title: `Mã: ${foundVoucher.couponCode} - Giảm ${foundVoucher.discountAmount} VND`,
+                code: foundVoucher.couponCode || 'N/A',
+                startDate: foundVoucher.startDate ? foundVoucher.startDate.split('T')[0] : 'N/A',
+                endDate: foundVoucher.expirationDate ? foundVoucher.expirationDate.split('T')[0] : 'N/A',
+                applicableProducts: foundVoucher.productId ? `Sản phẩm ID: ${foundVoucher.productId}` : 'Áp dụng cho nhiều sản phẩm',
+                status: foundVoucher.status === 1 ? 'Hoạt động' : 'Không hoạt động',
+                description: `Số lượng còn: ${foundVoucher.amountItem}`,
             };
 
             setVoucher(formattedVoucher);
@@ -105,3 +111,4 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
 });
+

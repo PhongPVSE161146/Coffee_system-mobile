@@ -15,8 +15,8 @@ import QRScannerScreen from '../screen/Scan/QRScannerScreen';
 import { useTheme } from '../components/ThemeContext';
 import { DarkTheme, DefaultTheme } from '@react-navigation/native';
 import ProductScreen from '../screen/Home/Product/ProductScreen';
-import TeaScreen from '../screen/Home/Product/TeaScreen';
-import CoffeeScreen from '../screen/Home/Product/CoffeeScreen';
+import ProductDetail from '../screen/Home/Product/ProductDetail';
+// import CoffeeScreen from '../screen/Home/Product/CoffeeScreen';
 import ScannerPointScreen from '../screen/Scan/ScannerPointScreen';
 import VoucherDetailScreen from '../screen/Home/Voucher/VoucherDetailScreen';
 import TopUpScreen from '../screen/Home/TopUp/TopUpScreen'
@@ -123,8 +123,8 @@ export default function StackNavigator() {
                 />
                 <Stack.Screen name="QRScan" component={QRScannerScreen} />
                 <Stack.Screen name="Product" component={ProductScreen} />
-                <Stack.Screen name="Tea" component={TeaScreen} />
-                <Stack.Screen name="Coffee" component={CoffeeScreen} />
+                <Stack.Screen name="ProductDetail" component={ProductDetail} />
+                {/* <Stack.Screen name="Coffee" component={CoffeeScreen} /> */}
                 <Stack.Screen name="TopUp" component={TopUpScreen} />
                 <Stack.Screen name="VoucherDetail" component={VoucherDetailScreen} />
                 <Stack.Screen name="QRPayment" component={QRPaymentScreen} />
@@ -133,10 +133,7 @@ export default function StackNavigator() {
                         headerShown: false,
                         gestureEnabled: false, // Vô hiệu hóa cử chỉ trượt (swipe back)
                     }}/>
-                <Stack.Screen name="HistoryDetail" component={HistoryDetailScreen} options={{
-                        headerShown: false,
-                        gestureEnabled: false, // Vô hiệu hóa cử chỉ trượt (swipe back)
-                    }}/>
+                <Stack.Screen name="HistoryDetail" component={HistoryDetailScreen} />
                 
             </Stack.Navigator>
         </NavigationContainer>

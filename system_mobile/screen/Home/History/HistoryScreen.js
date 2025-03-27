@@ -1,146 +1,133 @@
-import React from "react";
-import { View, Text, FlatList, StyleSheet, TouchableOpacity } from "react-native";
-
-const historyData = [
-    {
-      id: "1",
-      date: "12/03/2025",
-      total: "250.000đ",
-      status: "Đã mua",
-      products: [
-        { id: "p1", name: "Cà phê đen", price: "50.000đ", image: "https://file.hstatic.net/1000075078/file/blog_fced2a59673346c48240e09512312768_grande.jpg" },
-        { id: "p2", name: "Trà xanh", price: "40.000đ", image: "https://file.hstatic.net/1000075078/file/blog_fced2a59673346c48240e09512312768_grande.jpg" },
-      ],
-    },
-    {
-      id: "2",
-      date: "10/03/2025",
-      total: "500.000đ",
-      status: "Đã hủy",
-      products: [
-        { id: "p3", name: "Cà phê sữa", price: "60.000đ", image: "https://file.hstatic.net/1000075078/file/blog_fced2a59673346c48240e09512312768_grande.jpg" },
-      ],
-    },
-    {
-      id: "3",
-      date: "08/03/2025",
-      total: "150.000đ",
-      status: "Đang xử lý",
-      products: [
-        { id: "p4", name: "Espresso", price: "70.000đ", image: "https://file.hstatic.net/1000075078/file/blog_fced2a59673346c48240e09512312768_grande.jpg" },
-        { id: "p5", name: "Cà phê Mocha", price: "80.000đ", image: "https://file.hstatic.net/1000075078/file/blog_fced2a59673346c48240e09512312768_grande.jpg" },
-      ],
-    },
-    {
-      id: "4",
-      date: "05/03/2025",
-      total: "300.000đ",
-      status: "Đã mua",
-      products: [
-        { id: "p6", name: "Trà sữa", price: "90.000đ", image: "https://file.hstatic.net/1000075078/file/blog_fced2a59673346c48240e09512312768_grande.jpg" },
-        { id: "p7", name: "Cà phê latte", price: "110.000đ", image: "https://file.hstatic.net/1000075078/file/blog_fced2a59673346c48240e09512312768_grande.jpg" },
-      ],
-    },
-    {
-      id: "5",
-      date: "02/03/2025",
-      total: "450.000đ",
-      status: "Đã hủy",
-      products: [
-        { id: "p8", name: "Trà chanh", price: "30.000đ", image: "https://file.hstatic.net/1000075078/file/blog_fced2a59673346c48240e09512312768_grande.jpg" },
-        { id: "p9", name: "Trà gừng", price: "35.000đ", image: "https://file.hstatic.net/1000075078/file/blog_fced2a59673346c48240e09512312768_grande.jpg" },
-        { id: "p10", name: "Cà phê bạc xỉu", price: "50.000đ", image: "https://file.hstatic.net/1000075078/file/blog_fced2a59673346c48240e09512312768_grande.jpg" },
-      ],
-    },
-    {
-      id: "6",
-      date: "28/02/2025",
-      total: "120.000đ",
-      status: "Đã mua",
-      products: [
-        { id: "p11", name: "Trà đào cam sả", price: "60.000đ", image: "https://file.hstatic.net/1000075078/file/blog_fced2a59673346c48240e09512312768_grande.jpg" },
-        { id: "p12", name: "Cà phê Capuchino", price: "60.000đ", image: "https://file.hstatic.net/1000075078/file/blog_fced2a59673346c48240e09512312768_grande.jpg" },
-      ],
-    },
-    {
-      id: "7",
-      date: "25/02/2025",
-      total: "350.000đ",
-      status: "Đang xử lý",
-      products: [
-        { id: "p13", name: "Sinh tố xoài", price: "100.000đ", image: "https://file.hstatic.net/1000075078/file/blog_fced2a59673346c48240e09512312768_grande.jpg" },
-        { id: "p14", name: "Sinh tố dâu", price: "120.000đ", image: "https://file.hstatic.net/1000075078/file/blog_fced2a59673346c48240e09512312768_grande.jpg" },
-        { id: "p15", name: "Cà phê đá xay", price: "130.000đ", image: "https://file.hstatic.net/1000075078/file/blog_fced2a59673346c48240e09512312768_grande.jpg" },
-      ],
-    },
-    {
-      id: "8",
-      date: "20/02/2025",
-      total: "200.000đ",
-      status: "Đã mua",
-      products: [
-        { id: "p16", name: "Trà Oolong", price: "90.000đ", image: "https://file.hstatic.net/1000075078/file/blog_fced2a59673346c48240e09512312768_grande.jpg" },
-        { id: "p17", name: "Matcha Latte", price: "110.000đ", image: "https://file.hstatic.net/1000075078/file/blog_fced2a59673346c48240e09512312768_grande.jpg" },
-      ],
-    },
-    {
-      id: "9",
-      date: "15/02/2025",
-      total: "180.000đ",
-      status: "Đã mua",
-      products: [
-        { id: "p18", name: "Trà sữa khoai môn", price: "80.000đ", image: "https://file.hstatic.net/1000075078/file/blog_fced2a59673346c48240e09512312768_grande.jpg" },
-        { id: "p19", name: "Trà sữa matcha", price: "100.000đ", image: "https://file.hstatic.net/1000075078/file/blog_fced2a59673346c48240e09512312768_grande.jpg" },
-      ],
-    },
-    {
-      id: "10",
-      date: "10/02/2025",
-      total: "250.000đ",
-      status: "Đã hủy",
-      products: [
-        { id: "p20", name: "Cà phê Americano", price: "90.000đ", image: "https://file.hstatic.net/1000075078/file/blog_fced2a59673346c48240e09512312768_grande.jpg" },
-        { id: "p21", name: "Trà gạo lứt", price: "60.000đ", image: "https://file.hstatic.net/1000075078/file/blog_fced2a59673346c48240e09512312768_grande.jpg" },
-        { id: "p22", name: "Sinh tố chuối", price: "100.000đ", image: "https://file.hstatic.net/1000075078/file/blog_fced2a59673346c48240e09512312768_grande.jpg" },
-      ],
-    },
-  ];
-  
+import React, { useState } from 'react';
+import { View, Text, FlatList, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
+import axios from 'axios';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function HistoryScreen({ navigation }) {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>📜 Lịch sử Thanh Toán</Text>
-      <FlatList
-        data={historyData}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            style={styles.card}
-            onPress={() => navigation.navigate("HistoryDetail", { order: item })}
-          >
-            <Text style={styles.date}>Ngày: {item.date}</Text>
-            <Text style={styles.total}>Tổng tiền: {item.total}</Text>
-            <Text
-              style={[
-                styles.status,
-                { color: item.status === "Đã mua" ? "green" : item.status === "Đã hủy" ? "red" : "orange" },
-              ]}
-            >
-              {item.status}
-            </Text>
-          </TouchableOpacity>
-        )}
-      />
-    </View>
-  );
+    const [transactions, setTransactions] = useState([]);
+    const [loading, setLoading] = useState(true);
+    // const API_HISTORY_URL = process.env.EXPO_PUBLIC_HISTORY_URL;
+    const API_HISTORY_URL = "https://coffeeshop.ngrok.app/api/transactions";
+
+    useFocusEffect(
+        React.useCallback(() => {
+            const fetchTransactions = async () => {
+                try {
+                    const response = await axios.get(API_HISTORY_URL);
+                    console.log('API_HISTORY_URL:', API_HISTORY_URL);
+                    console.log(response.data);
+
+                    if (!response.data || !Array.isArray(response.data.transactions)) {
+                        throw new Error("Dữ liệu API không hợp lệ");
+                    }
+
+                    const formattedData = response.data.transactions.map(item => ({
+                        id: item.transactionId.toString(),
+                        date: new Date(item.transactionDate).toLocaleDateString(),
+                        amount: item.transactionAmount,
+                        status: item.transactionAmount < 0 ? "Đã chi tiêu" : "Nạp tiền",
+                    }));
+
+                    setTransactions(formattedData);
+                } catch (error) {
+                    console.error("Lỗi khi lấy dữ liệu: ", error);
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+            fetchTransactions();
+
+            return () => {};
+        }, [])
+    );
+
+    if (loading) {
+        return (
+            <View style={styles.loadingContainer}>
+                <ActivityIndicator size="large" color="#0000ff" />
+            </View>
+        );
+    }
+
+    return (
+        <View style={styles.container}>
+            <Text style={styles.title}>📜 Lịch sử Thanh Toán</Text>
+            
+            {transactions.length === 0 ? (
+                <View style={styles.noTransactionContainer}>
+                    <Text style={styles.noTransactionText}>Không có giao dịch nào</Text>
+                </View>
+            ) : (
+                <FlatList
+                    data={transactions}
+                    keyExtractor={(item) => item.id}
+                    renderItem={({ item }) => (
+                        <TouchableOpacity
+                            style={styles.card}
+                            onPress={() => navigation.navigate('HistoryDetail', { transactionId: item.id })}
+                        >
+                            <Text style={styles.transactionDate}>Ngày: {item.date}</Text>
+                            <Text style={styles.transactionAmount}>Số tiền: {item.amount.toLocaleString()}đ</Text>
+                            <Text style={[styles.transactionStatus, { color: item.amount < 0 ? "red" : "green" }]}>
+                                {item.status}
+                            </Text>
+                        </TouchableOpacity>
+                    )}
+                />
+            )}
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, backgroundColor: "#FFFFCC" },
-  title: { fontSize: 24, fontWeight: "bold", textAlign: "center", marginBottom: 10, marginTop: 50 },
-  card: { backgroundColor: "#f1f1f1", padding: 15, borderRadius: 8, marginBottom: 10 },
-  date: { fontSize: 16, fontWeight: "bold" },
-  total: { fontSize: 16, color: "#333", marginTop: 5 },
-  status: { fontSize: 16, fontWeight: "bold", marginTop: 5 },
+    container: { 
+        flex: 1, 
+        padding: 20, 
+        backgroundColor: '#FFFFCC' 
+    },
+    title: { 
+        fontSize: 24, 
+        fontWeight: 'bold', 
+        textAlign: 'center', 
+        marginTop: 50, 
+        marginBottom: 20 
+    },
+    card: { 
+        backgroundColor: '#f1f1f1', 
+        padding: 15, 
+        borderRadius: 8, 
+        marginBottom: 10 
+    },
+    transactionDate: { 
+        fontSize: 16, 
+        fontWeight: 'bold' 
+    },
+    transactionAmount: { 
+        fontSize: 16, 
+        color: '#333', 
+        marginTop: 5 
+    },
+    transactionStatus: { 
+        fontSize: 16, 
+        fontWeight: 'bold', 
+        marginTop: 5 
+    },
+    loadingContainer: { 
+        flex: 1, 
+        justifyContent: 'center', 
+        alignItems: 'center' 
+    },
+    noTransactionContainer: { 
+        flex: 1, 
+        justifyContent: 'center', 
+        alignItems: 'center' 
+    },
+    noTransactionText: { 
+        fontSize: 22, 
+        fontWeight: 'bold', 
+        color: '#888', 
+        textAlign: 'center',
+        marginBottom: 80
+    },
 });
