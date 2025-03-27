@@ -150,6 +150,7 @@ export default function HomePageScreen({ navigation, route }) {
     return (
         <ScrollView style={styles.container} showsVerticalScrollIndicator={true}>
             <View style={styles.header}>
+           
                 <View style={styles.userInfo}>
                     <Image
                         source={{ uri: user?.photoURL || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRt823sklj0_dEOAH3VzA3SR8ZUVftMdfiylA&s' }}

@@ -5,7 +5,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 
 export default function ProfileDetailSceen({ navigation }) {
   const [name, setName] = useState("phong@gmail.com", true);
-  const [phone] = useState("0833183077");
+  const [phone] = useState("");
   const [dob, setDob] = useState(new Date());
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("Cầu Kênh Chè, Xã Long Thạnh, Huyện Thủ...");
