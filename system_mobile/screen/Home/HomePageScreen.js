@@ -8,6 +8,11 @@ import { Badge } from 'react-native-elements';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
+const mockNotifications = [
+    { id: '1', title: '🛍 Khuyến mãi HOT!', body: 'Giảm giá 50% cho đơn hàng đầu tiên.', data: { screen: 'Voucher' } },
+    { id: '2', title: '📦 Đơn hàng đã giao', body: 'Đơn hàng của bạn đã được giao thành công.', data: { screen: 'OrderDetail', orderId: '12345' } },
+    { id: '3', title: '🎁 Quà tặng dành riêng cho bạn!', body: 'Bạn có một mã giảm giá 20%.', data: { screen: 'Wallet' } }
+];
 
 async function registerForPushNotificationsAsync() {
     let token;
@@ -37,6 +42,14 @@ export default function HomePageScreen({ navigation, route }) {
     const notificationListener = useRef();
     const responseListener = useRef();
     const animatedValue = useRef(new Animated.Value(0)).current;
+    useEffect(() => {
+        Animated.loop(
+            Animated.sequence([
+                Animated.timing(animatedValue, { toValue: -SCREEN_WIDTH, duration: 10000, easing: Easing.linear, useNativeDriver: true }),
+                Animated.timing(animatedValue, { toValue: SCREEN_WIDTH, duration: 0, useNativeDriver: true })
+            ])
+        ).start();
+    }, []);
 
     // Memoize hàm updateWalletBalance
     const updateWalletBalance = useCallback((amount) => {
@@ -90,21 +103,49 @@ export default function HomePageScreen({ navigation, route }) {
     // Đăng ký push notification
     useEffect(() => {
         registerForPushNotificationsAsync();
+
         notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
             Alert.alert(notification.request.content.title, notification.request.content.body);
         });
+
         responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
             console.log(response);
         });
+
+        const sendImmediateNotification = async () => {
+            await Notifications.scheduleNotificationAsync({
+
+                trigger: null,
+            });
+            setShowConfetti(true); // Hiện hiệu ứng pháo bông
+        };
+
+        sendImmediateNotification();
+
+        const interval = setInterval(() => {
+            sendRandomNotification();
+        }, 30000);
+
         return () => {
-            if (notificationListener.current) {
-                Notifications.removeNotificationSubscription(notificationListener.current);
-            }
-            if (responseListener.current) {
-                Notifications.removeNotificationSubscription(responseListener.current);
-            }
+            Notifications.removeNotificationSubscription(notificationListener.current);
+            Notifications.removeNotificationSubscription(responseListener.current);
+            clearInterval(interval);
         };
     }, []);
+    const sendRandomNotification = async () => {
+        const randomIndex = Math.floor(Math.random() * mockNotifications.length);
+        const notification = mockNotifications[randomIndex];
+
+        await Notifications.scheduleNotificationAsync({
+            content: {
+                title: notification.title,
+                body: notification.body,
+                data: notification.data,
+            },
+            trigger: null,
+        });
+    };
+
 
     return (
         <ScrollView style={styles.container} showsVerticalScrollIndicator={true}>

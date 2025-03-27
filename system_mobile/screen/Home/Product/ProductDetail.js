@@ -55,9 +55,7 @@ export default function ProductDetailScreen() {
 
     return (
         <ScrollView style={styles.container}>
-            {/* Nút Quay Lại */}
-         
-            {/* Card Sản Phẩm */}
+
             <View style={styles.card}>
             <Image 
     source={{ 

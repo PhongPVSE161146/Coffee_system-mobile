@@ -28,7 +28,7 @@ export default function ScannerPointScreen({ navigation }) {
     style={styles.payButton} 
     onPress={() => { 
         alert("Tích Điểm thành công!"); 
-        navigation.navigate("PaymentSuccess"); 
+        navigation.navigate("HomePage"); 
     }}
 >
     <Text style={styles.payButtonText}>Tích Điểm</Text>
